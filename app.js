@@ -55,18 +55,36 @@ const ships = [destroyer, submarine, cruiser, battleship, carrier]
 console.log(ships)
 
 function addShipPiece(ship) {
-    const allBoardBlocks = document.querySelectorAll('#computer div')//obtengo el tablero de divs de computer
-    const randomBoolean = Math.random() > 0.5
-    const isHorizontal = true
+    const allBoardBlocks = document.querySelectorAll('#computer div') //obtengo el tablero de divs de computer
+    const randomBoolean = Math.random() > 0.5 //con esta condicion dice si es true o false
+    const isHorizontal = randomBoolean
     const randomStarIndex = Math.floor(Math.random() * width * width)
     console.log(randomStarIndex)
 
+    //repasar esta logica de validaciones - estas valouidacion permite presionar el lugar del barco dentro  del campo y que no se desborden los barcos
+    let valideStart = isHorizontal ? randomStarIndex <= width * width - ship.length ? randomStarIndex : 
+    width * width - ship.length :
+    //hanlde vertical
+    randomStarIndex <= width * width - width * ship.length ? randomStarIndex : randomStarIndex - ship.length * width + width
+
+
+    let shipBlocks = []
+    console.log(shipBlocks)
+
     for (let i = 0; i < ship.length; i++) {
         if(isHorizontal){
-            console.log(allBoardBlocks[Number(randomStarIndex) + i])
+            shipBlocks.push(allBoardBlocks[Number(valideStart) + i])
+        } else {
+            shipBlocks.push(allBoardBlocks[Number(valideStart) + i * width])
         }
     }
 
+    shipBlocks.forEach( shipBlock => { 
+        shipBlock.classList.add(ship.name)
+        shipBlock.classList.add('taken')
+     })
+
+     console.log(shipBlocks)
 }
 
-addShipPiece(destroyer)
+ships.forEach( ship => addShipPiece(ship))
