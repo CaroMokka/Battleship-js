@@ -122,7 +122,7 @@ function addShipPiece(user, ship, startId) {
       shipBlock.classList.add("taken");
     });
   } else {
-    if(user === 'computer') addShipPiece(ship);
+    if(user === 'computer') addShipPiece(user, ship, startId);
     if(user === 'player') notDropped = true
   }
 
