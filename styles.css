@@ -66,9 +66,16 @@
 .hover {
   background-color: grey;
 }
+#computer .battleship,
+#computer .cruiser,
+#computer .carrier,
+#computer .destroyer,
+#computer .submarine {
+  background-color: pink;
+}
 .boom {
-  background-color: red;
+  background-color: red !important;
 }
 .empty {
-  background-color: grey;
+  background-color: grey !important;
 }

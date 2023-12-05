@@ -199,15 +199,18 @@ let playerTurn;
 //start Game
 
 function startGame() {
-  if (optionContainer.children.length !== 0) {
-    //revisar validsacion minuto 1:22:38 min
-    infoDisplay.textContent = "Please place all your pieces first!";
-  } else {
-    const allBoardBlocks = document.querySelectorAll("#computer div");
-    allBoardBlocks.forEach((block) =>
-      block.addEventListener("click", handleClick)
-    );
-    console.log(allBoardBlocks);
+  if (playerTurn === undefined) {
+    if (optionContainer.children.length !== 0) {
+      infoDisplay.textContent = "Please place all your pieces first!";
+    } else {
+      const allBoardBlocks = document.querySelectorAll("#computer div");
+      allBoardBlocks.forEach((block) =>
+        block.addEventListener("click", handleClick)
+      );
+      playerTurn = true;
+      turnDisplay.textContent = "Your Go!";
+      infoDisplay.textContent = "The game has started";
+    }
   }
 }
 startButton.addEventListener("click", startGame);
@@ -292,14 +295,20 @@ function checkScore(user, userHits, userSunkShips) {
       userHits.filter((storedShipName) => storedShipName === shipName)
         .length === shipLength
     ) {
-      infoDisplay.textContent = `you sunk the ${user}'s ${shipName}`;
+
       if (user === "player") {
-        playerHits = playerHits.filter((storedShipName) => storedShipName !== shipName);
+        infoDisplay.textContent = `you sunk the computer's ${shipName}`;
+        playerHits = playerHits.filter(
+          (storedShipName) => storedShipName !== shipName
+        );
       }
       if (user === "computer") {
-        computerHits = computerHits.filter((storedShipName) => storedShipName !== shipName);
+        infoDisplay.textContent = `The computer sunk your ${shipName}`;
+        computerHits = computerHits.filter(
+          (storedShipName) => storedShipName !== shipName
+        );
       }
-      userSunkShips.push(shipName)
+      userSunkShips.push(shipName);
     }
   }
   checkShip("destroyer", 2);
@@ -310,4 +319,14 @@ function checkScore(user, userHits, userSunkShips) {
 
   console.log("playerHits", playerHits);
   console.log("playerSunkShips", playerSunkShips);
+
+  if (playerSunkShips.length === 5) {
+    infoDisplay.textContent = "You sunk all the computers ships. You WON!";
+    gameOver = true;
+  }
+  if (computerSunkShips.length === 5) {
+    infoDisplay.textContent =
+      "The computer has sunk all yours ships. You LOST!";
+    gameOver = true;
+  }
 }
